@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- Helper Functions ---
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+       return request.auth.uid == "b8xaYwJXY9UuNuj6O9bEFfKdIdx2"; 
+    }
+
+    // --- Collection Rules ---
+
+    // 1. "rooms" Collection
+    match /rooms/{roomId} {
+      allow read: if true;
+      allow write: if isAdmin(); 
+      
+      match /availability/{date} {
+         allow read: if true;
+         allow write: if isAuthenticated();
+      }
+    }
+
+    // 2. "users" Collection
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // 3. "bookings" Collection
+    match /bookings/{bookingId} {
+      allow create: if isAuthenticated() 
+                   && request.resource.data.guest.userId == request.auth.uid;
+      
+      allow read: if isAdmin() 
+                  || (isAuthenticated() && (resource.data.guest.userId == request.auth.uid || resource.data.userId == request.auth.uid));
+      
+      allow update: if isAdmin() 
+                   || (isAuthenticated() && (resource.data.guest.userId == request.auth.uid || resource.data.userId == request.auth.uid));
+                   
+      allow delete: if isAdmin();
+    }
+
+    // 4. "gallery" Collection
+    match /gallery/{imageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 5. "about_gallery" Collection (For Admin About Page)
+    match /about_gallery/{imageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 6. "content" Collection
+    match /content/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 7. "reviews" Collection
+    match /reviews/{reviewId} {
+      allow read: if true;
+      // Allow create if logged in and userId matches
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      // Allow update/delete only if admin or owner
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // 8. "chats" Collection
+    match /chats/{chatId} {
+      // User can access their own chat, Admin can access all
+      // Modified to allow delete (write) if Admin
+      allow read, write: if shouldAccessChat(chatId);
+      
+      match /messages/{messageId} {
+        allow read, write: if shouldAccessChat(chatId);
+      }
+      
+      function shouldAccessChat(chatId) {
+        return isAdmin() || (isAuthenticated() && request.auth.uid == chatId);
+      }
+    }
+  }
+}
