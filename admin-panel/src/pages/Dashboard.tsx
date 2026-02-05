@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { StatsCard } from '@/components/dashboard/StatsCard';
-import { CalendarCheck, BedDouble, IndianRupee, Users, Loader2 } from 'lucide-react';
+import { CalendarCheck, BedDouble, IndianRupee, Loader2 } from 'lucide-react';
 
 interface DashboardStats {
     totalBookings: number;
