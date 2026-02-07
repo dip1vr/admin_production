@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BedDouble, CalendarCheck, Users, LogOut, Hotel, Images, Utensils, MessageSquare, X, MessageCircle, Info } from 'lucide-react';
+import { LayoutDashboard, BedDouble, CalendarCheck, Users, LogOut, Hotel, Images, Utensils, MessageSquare, X, MessageCircle, Info, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { signOut } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
@@ -16,6 +16,7 @@ const navItems = [
     { to: '/dining', icon: Utensils, label: 'Dining' },
     { to: '/users', icon: Users, label: 'Users' },
     { to: '/chat', icon: MessageCircle, label: 'Chat' },
+    { to: '/site-visits', icon: Globe, label: 'Site Visits' },
 ];
 
 interface SidebarProps {

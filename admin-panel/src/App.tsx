@@ -12,6 +12,7 @@ import Reviews from '@/pages/Reviews';
 import About from '@/pages/About';
 import Users from '@/pages/Users';
 import Chat from '@/pages/Chat';
+import SiteVisits from '@/pages/SiteVisits';
 import { Layout } from '@/components/layout/Layout';
 
 // Placeholder Pages for now
@@ -73,6 +74,7 @@ function App() {
           <Route path="/gallery" element={<ProtectedRoute><Gallery /></ProtectedRoute>} />
           <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
           <Route path="/dining" element={<ProtectedRoute><Dining /></ProtectedRoute>} />
+          <Route path="/site-visits" element={<ProtectedRoute><SiteVisits /></ProtectedRoute>} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
