@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { Loader2, Globe, Search, TrendingUp, Users, Monitor, Smartphone, Layout } from 'lucide-react';
+import { Loader2, Globe, Search, TrendingUp, Users, Monitor, Smartphone } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -261,7 +261,7 @@ export default function SiteVisits() {
                                     paddingAngle={5}
                                     dataKey="value"
                                 >
-                                    {platformStats.map((entry, index) => (
+                                    {platformStats.map((_entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
